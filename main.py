@@ -26,6 +26,8 @@ async def echo_all(message):
         f"Ты написал: {message.text}\n\nЭто эхо-бот 😊"
     )
 
-
-if __name__ == '__main__':
-    asyncio.run(bot.polling())
+if __name__ == "__main__":
+    print("Бот запущен...")
+    asyncio.run(bot.polling(non_stop=True))
+#if __name__ == '__main__':
+#   asyncio.run(bot.polling())
