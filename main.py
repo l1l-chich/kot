@@ -4,7 +4,6 @@
 # It echoes any incoming text messages.
 import asyncio
 import os
-import aiohttp
 
 from telebot.async_telebot import AsyncTeleBot
 
