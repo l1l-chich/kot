@@ -4,6 +4,7 @@
 # It echoes any incoming text messages.
 import asyncio
 import os
+import aiohttp
 
 from telebot.async_telebot import AsyncTeleBot
 
@@ -22,5 +23,5 @@ async def send_welcome(message):
 async def echo_message(message):
     await bot.reply_to(message, message.text)
 
-
-asyncio.run(bot.polling())
+if __name__ == '__main__':
+    asyncio.run(bot.polling())
