@@ -10,17 +10,22 @@ from telebot.async_telebot import AsyncTeleBot
 bot = AsyncTeleBot(os.environ["TELEGRAM_TOKEN"])
 
 
-# Handle '/start' and '/help'
-@bot.message_handler(commands=['help', 'start'])
+@bot.message_handler(commands=['start'])
 async def send_welcome(message):
-    text = 'привет додик\nкак твои дела?'
-    await bot.reply_to(message, text)
+    await bot.reply_to(message, "Привет! Я твой бот. Напиши что-нибудь или воспользуйся /help.")
+@bot.message_handler(commands=['help'])
 
+async def send_help(message):
+    await bot.reply_to(message, "Я могу отвечать на любые сообщения. Просто напиши мне!")
 
-# Handle all other messages with content_type 'text' (content_types defaults to ['text'])
+# Обработчик любого текстового сообщения
 @bot.message_handler(func=lambda message: True)
-async def echo_message(message):
-    await bot.reply_to(message, message.text)
+async def echo_all(message):
+    await bot.send_message(
+        message.chat.id,
+        f"Ты написал: {message.text}\n\nЭто эхо-бот 😊"
+    )
+
 
 if __name__ == '__main__':
     asyncio.run(bot.polling())
