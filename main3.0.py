@@ -17,8 +17,27 @@ user_state = {}  # {user_id: 'awaiting_amount'}
 def main_menu():
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(KeyboardButton("💱 Конвертировать BYN в USD"))
+    markup.add(KeyboardButton("📊 Текущий курс"))  # ← НОВАЯ КНОПКА
     markup.add(KeyboardButton("ℹ️ О боте"))
     return markup
+
+@bot.message_handler(func=lambda msg: msg.text == "📊 Текущий курс")
+async def send_current_rate(message):
+    rate = await get_usd_rate_from_nbrb()
+    if rate is None:
+        await bot.send_message(
+            message.chat.id,
+            "⚠️ Не удалось получить курс от Национального банка РБ."
+        )
+        return
+
+    today = datetime.now().strftime("%d.%m.%Y")
+    await bot.send_message(
+        message.chat.id,
+        f"🏦 *Официальный курс НБ РБ на {today}*:\n\n"
+        f"*1 USD = {rate:.4f} BYN*",
+        parse_mode="Markdown"
+    )
 
 async def get_usd_rate_from_nbrb():
     url = "https://www.nbrb.by/api/exrates/rates/USD?parammode=2"
@@ -106,5 +125,5 @@ async def handle_text(message):
 
 # Запуск
 if __name__ == "__main__":
-    logger.info("🚀 Бот запущен (без register_next_step_handler)")
+    logger.info("🚀 Бот запущен ...")
     asyncio.run(bot.polling(non_stop=True))
