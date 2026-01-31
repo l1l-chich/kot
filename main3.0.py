@@ -181,19 +181,19 @@ async def handle_amount_input(message):
     reply = ""
 
     if state == "awaiting_amount_byn":
-        if not usd_: return await bot.send_message(message.chat.id, "⚠️ Ошибка курса USD.")
+        if not usd_data: return await bot.send_message(message.chat.id, "⚠️ Ошибка курса USD.")
         usd_rate = usd_data["Cur_OfficialRate"]
         result_usd = amount / usd_rate
         reply = f"💱 *{amount:.2f} BYN* = *{result_usd:.2f} USD*\nКурс: 1 USD = {usd_rate:.4f} BYN"
 
     elif state == "awaiting_amount_usd_to_byn":
-        if not usd_: return await bot.send_message(message.chat.id, "⚠️ Ошибка курса USD.")
+        if not usd_data: return await bot.send_message(message.chat.id, "⚠️ Ошибка курса USD.")
         usd_rate = usd_data["Cur_OfficialRate"]
         result_byn = amount * usd_rate
         reply = f"💱 *{amount:.2f} USD* = *{result_byn:.2f} BYN*\nКурс: 1 USD = {usd_rate:.4f} BYN"
 
     elif state == "awaiting_amount_rub":
-        if not usd_ or not rub_: return await bot.send_message(message.chat.id, "⚠️ Ошибка курсов.")
+        if not usd_data or not rub_data: return await bot.send_message(message.chat.id, "⚠️ Ошибка курсов.")
         usd_rate = usd_data["Cur_OfficialRate"]
         rub_scale = rub_data["Cur_Scale"]
         rub_rate_total = rub_data["Cur_OfficialRate"]
@@ -206,7 +206,7 @@ async def handle_amount_input(message):
         )
 
     elif state == "awaiting_amount_usd_to_rub":
-        if not usd_ or not rub_: return await bot.send_message(message.chat.id, "⚠️ Ошибка курсов.")
+        if not usd_data or not rub_data: return await bot.send_message(message.chat.id, "⚠️ Ошибка курсов.")
         usd_rate = usd_data["Cur_OfficialRate"]
         rub_scale = rub_data["Cur_Scale"]
         rub_rate_total = rub_data["Cur_OfficialRate"]
@@ -219,7 +219,7 @@ async def handle_amount_input(message):
         )
 
     elif state == "awaiting_amount_rub_to_byn":
-        if not rub_: return await bot.send_message(message.chat.id, "⚠️ Ошибка курса RUB.")
+        if not rub_data: return await bot.send_message(message.chat.id, "⚠️ Ошибка курса RUB.")
         rub_scale = rub_data["Cur_Scale"]
         rub_rate_total = rub_data["Cur_OfficialRate"]
         rub_to_byn = rub_rate_total / rub_scale
@@ -230,7 +230,7 @@ async def handle_amount_input(message):
         )
 
     elif state == "awaiting_amount_byn_to_rub":  # ← НОВАЯ ЛОГИКА
-        if not rub_: return await bot.send_message(message.chat.id, "⚠️ Ошибка курса RUB.")
+        if not rub_data: return await bot.send_message(message.chat.id, "⚠️ Ошибка курса RUB.")
         rub_scale = rub_data["Cur_Scale"]
         rub_rate_total = rub_data["Cur_OfficialRate"]
         rub_to_byn = rub_rate_total / rub_scale  # 1 RUB
